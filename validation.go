@@ -268,7 +268,9 @@ func (v *subSchema) validateRecursive(currentSubSchema *subSchema, currentNode i
 
 // Different kinds of validation there, subSchema / common / array / object / string...
 func (v *subSchema) validateSchema(currentSubSchema *subSchema, currentNode interface{}, result *Result, context *JsonContext) {
-
+	if !result.Valid() {
+		return
+	}
 	if internalLogEnabled {
 		internalLog("validateSchema %s", context.String())
 		internalLog(" %v", currentNode)
@@ -399,7 +401,9 @@ func (v *subSchema) validateSchema(currentSubSchema *subSchema, currentNode inte
 }
 
 func (v *subSchema) validateCommon(currentSubSchema *subSchema, value interface{}, result *Result, context *JsonContext) {
-
+	if !result.Valid() {
+		return
+	}
 	if internalLogEnabled {
 		internalLog("validateCommon %s", context.String())
 		internalLog(" %v", value)
@@ -456,7 +460,9 @@ func (v *subSchema) validateCommon(currentSubSchema *subSchema, value interface{
 }
 
 func (v *subSchema) validateArray(currentSubSchema *subSchema, value []interface{}, result *Result, context *JsonContext) {
-
+	if !result.Valid() {
+		return
+	}
 	if internalLogEnabled {
 		internalLog("validateArray %s", context.String())
 		internalLog(" %v", value)
@@ -582,7 +588,9 @@ func (v *subSchema) validateArray(currentSubSchema *subSchema, value []interface
 }
 
 func (v *subSchema) validateObject(currentSubSchema *subSchema, value map[string]interface{}, result *Result, context *JsonContext) {
-
+	if !result.Valid() {
+		return
+	}
 	if internalLogEnabled {
 		internalLog("validateObject %s", context.String())
 		internalLog(" %v", value)
@@ -638,7 +646,6 @@ func (v *subSchema) validateObject(currentSubSchema *subSchema, value map[string
 
 		//  Check whether this property is described by "patternProperties"
 		ppMatch := v.validatePatternProperty(currentSubSchema, pk, value[pk], result, context)
-
 		// If it is not described by neither "properties" nor "patternProperties" it must pass "additionalProperties"
 		if !found && !ppMatch {
 			switch ap := currentSubSchema.additionalProperties.(type) {
@@ -679,7 +686,6 @@ func (v *subSchema) validateObject(currentSubSchema *subSchema, value map[string
 }
 
 func (v *subSchema) validatePatternProperty(currentSubSchema *subSchema, key string, value interface{}, result *Result, context *JsonContext) bool {
-
 	if internalLogEnabled {
 		internalLog("validatePatternProperty %s", context.String())
 		internalLog(" %s %v", key, value)
@@ -705,7 +711,9 @@ func (v *subSchema) validatePatternProperty(currentSubSchema *subSchema, key str
 }
 
 func (v *subSchema) validateString(currentSubSchema *subSchema, value interface{}, result *Result, context *JsonContext) {
-
+	if !result.Valid() {
+		return
+	}
 	// Ignore JSON numbers
 	if isJSONNumber(value) {
 		return
@@ -762,7 +770,9 @@ func (v *subSchema) validateString(currentSubSchema *subSchema, value interface{
 }
 
 func (v *subSchema) validateNumber(currentSubSchema *subSchema, value interface{}, result *Result, context *JsonContext) {
-
+	if !result.Valid() {
+		return
+	}
 	// Ignore non numbers
 	if !isJSONNumber(value) {
 		return
