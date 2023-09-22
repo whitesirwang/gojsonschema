@@ -1,4 +1,4 @@
-module github.com/xeipuuv/gojsonschema
+module github.com/whitesirwang/gojsonschema
 
 go 1.19
 
